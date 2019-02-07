@@ -1,0 +1,50 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="container">
+    <div class="column one-third">
+        <form id="upload-file" method="post" enctype="multipart/form-data">
+            <h3>Upload a png/jpg/jpeg file</h3>
+            <br/>
+            <label for="imageUpload" class="upload-label">
+                Choose...
+            </label>
+            <input type="file" name="file" id="imageUpload" accept=".png, .jpg, .jpeg">
+        </form>       
+   </div>
+
+    <div class="column one-third">
+        <div class="image-section" style="display:none;">
+            <h3>Image Preview</h3>
+            <div class="img-preview">
+                <div id="imagePreview"></div>
+            </div>
+            <br/>
+            <div>
+                <button type="button" class="btn btn-primary btn-lg " id="btn-predict">Predict!</button>
+            </div>
+        </div>
+         <div class="loader" style="display:none;"></div>       
+    </div>
+    
+    <div class="column one-third">
+        <h4 id="result1">
+            <span> </span>
+        </h4> 
+        <h4 id="result2">
+            <span> </span>
+        </h4>
+        <h4 id="result3">
+                <span> </span>
+        </h4>
+        <h4 id="result4">
+                <span> </span>
+        </h4>
+        <h4 id="result5">
+                <span> </span>
+        </h4>
+    </div>
+         
+</div>
+
+
+{% endblock %}
