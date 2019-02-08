@@ -15,7 +15,6 @@ from gevent.pywsgi import WSGIServer
 
 # Define a flask app
 app = Flask(__name__)
-file_path = "534"
 
 print('Model loaded. Check http://127.0.0.1:5000/')
 
@@ -55,8 +54,10 @@ def upload():
 def choose_result():
     if request.method == 'POST':
         result = request.form['result']
+
+        # put result and path into database
         print(result)
-        print(os.environ['FILEPATH'] + "88")
+        print(os.environ['FILEPATH'])
     return redirect('/')
 
 
