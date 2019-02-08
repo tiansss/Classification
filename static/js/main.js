@@ -19,8 +19,16 @@ $(document).ready(function () {
     $("#imageUpload").change(function () {
         $('.image-section').show();
         $('#btn-predict').show();
-        $('#result').text('');
-        $('#result').hide();
+        $('#result1').text('');
+        $('#result2').text('');
+        $('#result3').text('');
+        $('#result4').text('');
+        $('#result5').text('');
+        $('#result1').hide();
+        $('#result2').hide();
+        $('#result3').hide();
+        $('#result4').hide();
+        $('#result5').hide();
         readURL(this);
     });
 
@@ -54,7 +62,8 @@ $(document).ready(function () {
                 $('#result4').text('No.4: ' + data[3]);
                 $('#result5').fadeIn(600);
                 $('#result5').text('No.5: ' + data[4]);
-                console.log('Success!');
+                $('.choose_result').show();
+
             },
         });
     });

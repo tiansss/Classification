@@ -15,6 +15,7 @@ from gevent.pywsgi import WSGIServer
 
 # Define a flask app
 app = Flask(__name__)
+file_path = "534"
 
 print('Model loaded. Check http://127.0.0.1:5000/')
 
@@ -46,8 +47,17 @@ def upload():
             basepath, 'uploads', secure_filename(f.filename))
         f.save(file_path)
         result = model_predict(file_path, 5, 'model', 'categories.txt')
+        os.environ['FILEPATH'] = file_path
         return jsonify(result)
     return None
+
+@app.route('/choose_result', methods=['GET', 'POST'])
+def choose_result():
+    if request.method == 'POST':
+        result = request.form['result']
+        print(result)
+        print(os.environ['FILEPATH'] + "88")
+    return redirect('/')
 
 
 if __name__ == '__main__':

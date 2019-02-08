@@ -42,6 +42,24 @@
         <h4 id="result5">
                 <span> </span>
         </h4>
+
+        <div class="choose_result" style="display:none;">
+            <br/>
+            <p>Please help us better predicting.</p>
+            <p>Which one is the correct prediction?</p>
+            <form action="/choose_result", method="POST">
+                <select name="result">
+                  <option value="result1">result1</option>
+                  <option value="result2">result2</option>
+                  <option value="result3">result3</option>
+                  <option value="result4">result4</option>
+                  <option value="result5">result5</option>
+                  <option value="none">none</option>
+                </select>
+                <input type="submit" value="Submit">
+            </form>  
+        </div>
+        
     </div>
          
 </div>
