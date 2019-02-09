@@ -17,15 +17,6 @@ from bson.objectid import ObjectId # ObjectID used in mongoDB
 from werkzeug.utils import secure_filename
 from gevent.pywsgi import WSGIServer
 
-class JSONEncoder(json.JSONEncoder):                           
-    ''' extend json-encoder class'''
-    def default(self, o):                               
-        if isinstance(o, ObjectId):
-            return str(o)                               
-        if isinstance(o, datetime.datetime):
-            return str(o)
-        return json.JSONEncoder.default(self, o)
-
 # Define a flask app
 app = Flask(__name__)
 
@@ -35,8 +26,7 @@ app.config['MONGO_URI'] = 'mongodb://localhost:27017/image_classification_flask'
 # Define a mongo reference
 mongo = PyMongo(app)
 
-# Use the extended json-encoder as default
-app.json_encoder = JSONEncoder
+
 
 # file path environment variable name
 FILEPATH = 'FILEPATH'
@@ -78,11 +68,12 @@ def upload():
 def choose_result():
     if request.method == 'POST':
         result = request.form['result']
-
+        correct_result = request.form['correct_result']
         # put result and path into database
         insertion = mongo.db.images.insert_one({
             'path': os.environ[FILEPATH],
             'result': result,
+            'correct_result': correct_result,
         })
     return redirect('/')
 

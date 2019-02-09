@@ -1,8 +1,6 @@
 $(document).ready(function () {
     // Init
-    $('.image-section').hide();
-    $('.loader').hide();
-    $('#result').hide();
+    $('#correct_result').hide();
 
     // Upload Preview
     function readURL(input) {
@@ -29,6 +27,7 @@ $(document).ready(function () {
         $('#result3').hide();
         $('#result4').hide();
         $('#result5').hide();
+        $('.choose_result').hide();
         readURL(this);
     });
 
@@ -63,9 +62,17 @@ $(document).ready(function () {
                 $('#result5').fadeIn(600);
                 $('#result5').text('No.5: ' + data[4]);
                 $('.choose_result').show();
-
             },
         });
+    });
+
+    $('#result').change(function () {
+        if ($('#result option:selected').text() == "none"){
+            $('#correct_result').show();
+        }
+         else { 
+              $('#correct_result').hide();
+         }
     });
 
 });

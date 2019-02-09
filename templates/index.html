@@ -44,11 +44,12 @@
         </h4>
 
         <div class="choose_result" style="display:none;">
-            <br/>
+            <br/></br>
             <p>Please help us better predicting.</p>
             <p>Which one is the correct prediction?</p>
+            <p>(If none of above are correct, choose 'none' and select the correct category.)</p>
             <form action="/choose_result", method="POST">
-                <select name="result">
+                <select class="form-control" name="result" id='result'>
                   <option value="result1">result1</option>
                   <option value="result2">result2</option>
                   <option value="result3">result3</option>
@@ -56,7 +57,16 @@
                   <option value="result5">result5</option>
                   <option value="none">none</option>
                 </select>
-                <input type="submit" value="Submit">
+                </br>
+                <select class="form-control" name='correct_result' id='correct_result'>
+                    <option value="dog">dog</option>
+                    <option value="cat">cat</option>
+                    <option value="people">people</option>
+                    <option value="gun">gun</option>
+                    <option value="flower">flower</option>
+                </select>
+                </br>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </form>  
         </div>
         
