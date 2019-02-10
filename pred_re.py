@@ -1,4 +1,5 @@
 import os
+import urllib.request
 import tensorflow as tf
 import numpy as np
 from tensorflow.python.saved_model import tag_constants
@@ -28,14 +29,17 @@ def read_categories(dir):
     f.close()
     return ans
 
-def model_predict(file_path, max_size, model_path, categories_path):
+def model_predict(image_path, image_url, max_size, model_path, categories_path):
     categories = read_categories(categories_path)
     img_size = 299
     num_channels = 3
     jpeg_data_tensor, decoded_image_tensor = add_jpeg_decoding(img_size, img_size, num_channels)
     sess = tf.Session()
 
-    image_data = tf.gfile.FastGFile(file_path, 'rb').read()
+    if not (image_path == None):
+        image_data = tf.gfile.FastGFile(image_path, 'rb').read()
+    else:
+        image_data = urllib.request.urlopen(image_url).read()
     resized_input_values = np.array(sess.run(decoded_image_tensor, {jpeg_data_tensor: image_data}))
 
     tf.saved_model.loader.load(sess, [tag_constants.SERVING], model_path)
