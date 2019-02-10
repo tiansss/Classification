@@ -4,7 +4,7 @@ import os
 import json
 import datetime
 import config
-import model_datastore
+import model_mongodb
 import storage
 import numpy as np
 from pred_re import model_predict
@@ -17,11 +17,11 @@ from bson.objectid import ObjectId # ObjectID used in mongoDB
 from werkzeug.utils import secure_filename
 from gevent.pywsgi import WSGIServer
 
-class JSONEncoder(json.JSONEncoder):                           
+class JSONEncoder(json.JSONEncoder):
     ''' extend json-encoder class'''
-    def default(self, o):                               
+    def default(self, o):
         if isinstance(o, ObjectId):
-            return str(o)                               
+            return str(o)
         if isinstance(o, datetime.datetime):
             return str(o)
         return json.JSONEncoder.default(self, o)
@@ -48,7 +48,7 @@ app.config.from_object(config)
 
 # Setup the data model.
 with app.app_context():
-    model_datastore.init_app(app)
+    model_mongodb.init_app(app)
 
 # Configure MongoDB 
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/image_classification_flask'
@@ -93,11 +93,11 @@ def upload():
         image_url = upload_image_file(request.files['file'])
         if image_url:
             data['url'] = image_url
-        model_datastore.create(data)
+        image_id = model_mongodb.create(data)
 
         # Predict the category and return the result
         result = model_predict(None, image_url, 5, 'model', 'categories.txt')
-        os.environ['URL'] = image_url
+        os.environ['ID'] = str(image_id)
         return jsonify(result)
     return None
 
@@ -107,11 +107,18 @@ def choose_result():
         result = request.form['result']
         correct_result = request.form['correct_result']
         # put result and path into database
-        insertion = mongo.db.images.insert_one({
-            'url': os.environ['URL'],
-            'result': result,
-            'correct_result': correct_result,
-        })
+        # insertion = mongo.db.images.insert_one({
+        #     'url': os.environ['URL'],
+        #     'result': result,
+        #     'correct_result': correct_result,
+        # })
+        model_mongodb.update(
+            {
+                'result': result,
+                'correct_result': correct_result,
+            },
+            ObjectId(os.environ['ID'])
+        )
     return redirect('/')
 
 if __name__ == '__main__':

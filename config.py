@@ -28,7 +28,7 @@ SECRET_KEY = 'secret'
 # configure the respective settings for the one you choose below.
 # You do not have to configure the other data backends. If unsure, choose
 # 'datastore' as it does not require any additional configuration.
-DATA_BACKEND = 'datastore'
+DATA_BACKEND = 'mongodb'
 
 # Google Cloud Project ID. This can be found on the 'Overview' page at
 # https://console.developers.google.com
@@ -75,7 +75,7 @@ else:
 # Mongo configuration
 # If using mongolab, the connection URI is available from the mongolab control
 # panel. If self-hosting on compute engine, replace the values below.
-MONGO_URI = 'mongodb://user:password@host:27017/database'
+MONGO_URI = 'mongodb+srv://user0:password1995@cluster0-nfpmn.gcp.mongodb.net/image_classification_flask'
 
 # Google Cloud Storage and upload settings.
 # Typically, you'll name your bucket the same as your project. To create a
