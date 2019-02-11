@@ -1,5 +1,9 @@
 import os
-import urllib.request
+import six
+if six.PY2:
+    import urllib
+else:
+    import urllib.request
 import tensorflow as tf
 import numpy as np
 from tensorflow.python.saved_model import tag_constants
@@ -39,7 +43,10 @@ def model_predict(image_path, image_url, max_size, model_path, categories_path):
     if not (image_path == None):
         image_data = tf.gfile.FastGFile(image_path, 'rb').read()
     else:
-        image_data = urllib.request.urlopen(image_url).read()
+        if six.PY2:
+            image_data = urllib.urlopen(image_url).read()
+        else:   
+            image_data = urllib.request.urlopen(image_url).read()
     resized_input_values = np.array(sess.run(decoded_image_tensor, {jpeg_data_tensor: image_data}))
 
     tf.saved_model.loader.load(sess, [tag_constants.SERVING], model_path)
