@@ -10,6 +10,7 @@ from pred_re import model_predict
 # Flask utils
 from flask import current_app, Flask, redirect, url_for, request, render_template
 from flask import jsonify
+from bson.objectid import ObjectId # ObjectId used in mongoDB
 from werkzeug.utils import secure_filename
 from gevent.pywsgi import WSGIServer
 
