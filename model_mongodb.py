@@ -66,6 +66,12 @@ def read(id):
     return from_mongo(result)
 # [END read]
 
+# find all documents with the key,value
+def find(key, value):
+    return mongo.db.images.find({key:value})
+
+def find_field(key, value, field):
+    return mongo.db.images.find({key:value}, {field:1})
 
 # [START create]
 def create(data):

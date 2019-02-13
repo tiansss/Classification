@@ -32,7 +32,7 @@ def upload_image_file(file):
 
 # Define a flask app
 app = Flask(__name__)
-app.config.from_object(config)
+app.config.from_object(config) 
 
 # Setup the data model.
 with app.app_context():
@@ -55,37 +55,75 @@ def accuracy():
     #information page
     return render_template('accuracy.html')
 
+@app.route('/data')
+def data():
+    results1 = model_mongodb.find('result', 'result1')
+    results2 = model_mongodb.find('result', 'result2')
+    results3 = model_mongodb.find('result', 'result3')
+    results4 = model_mongodb.find('result', 'result4')
+    results5 = model_mongodb.find('result', 'result5')
+    results6 = model_mongodb.find('result', 'none')
+    results_count = [results1.count(), results2.count(), results3.count(), results4.count(), results5.count(), results6.count()]
+    return jsonify(results_count)
+
 @app.route('/predict', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
-        # # Get the file from post request
-        # f = request.files['file']
-
-        # # Save the file to ./uploads
-        # basepath = os.path.dirname(__file__)
-        # file_path = os.path.join(
-        #     basepath, 'uploads', secure_filename(f.filename))
-        # f.save(file_path)
-
-        data = request.form.to_dict(flat=True)
-
-        # If an image was uploaded, update the data to point to the new image.
+        # Upload the image in request to Google Cloud
         image_url = upload_image_file(request.files['file'])
-        if image_url:
-            data['url'] = image_url
-        image_id = model_mongodb.create(data)
-
+    
         # Predict the category and return the result
         result = model_predict(None, image_url, 5, 'model', 'categories.txt')
+        
+        # store url, results into MongoDB
+        data = request.form.to_dict(flat=True) #???
+        if image_url:
+            data['url'] = image_url
+            data['result1'] = result[0]
+            data['result2'] = result[1]
+            data['result3'] = result[2]
+            data['result4'] = result[3]
+            data['result5'] = result[4]
+        image_id = model_mongodb.create(data)
+
+        # store the current id into os.environ
         os.environ['ID'] = str(image_id)
+
         return jsonify(result)
+    return None
+
+@app.route('/choose_image', methods=['GET', 'POST'])
+def choose_image():
+    if request.method == 'POST':
+        category = request.form['image_category']
+        
+        #get image urls of result1 from mongoDB
+        image_list = list(model_mongodb.find('result', category))
+        urls = []
+        for image in image_list:
+            urls.append(image['url'])
+        return render_template('accuracy.html', urls = urls )
     return None
 
 @app.route('/choose_result', methods=['GET', 'POST'])
 def choose_result():
     if request.method == 'POST':
         result = request.form['result']
-        correct_result = request.form['correct_result']
+        
+        # figure out the correct result based on the result
+        if result == 'none':
+            correct_result = request.form['correct_result']
+        elif result == 'result1':
+            correct_result = model_mongodb.read(os.environ['ID'])['result1']
+        elif result == 'result2':
+            correct_result = model_mongodb.read(os.environ['ID'])['result2']
+        elif result == 'result3':
+            correct_result = model_mongodb.read(os.environ['ID'])['result3']
+        elif result == 'result4':
+            correct_result = model_mongodb.read(os.environ['ID'])['result4']
+        elif result == 'result5':
+            correct_result = model_mongodb.read(os.environ['ID'])['result5']
+
         # put result and url into database
         model_mongodb.update(
             {
@@ -95,6 +133,7 @@ def choose_result():
             ObjectId(os.environ['ID'])
         )
     return redirect('/')
+
 
 if __name__ == '__main__':
     # Serve the app with gevent

@@ -66,6 +66,7 @@ $(document).ready(function () {
         });
     });
 
+    //only show choose correct result when none of the result given is correct
     $('#result').change(function () {
         if ($('#result option:selected').text() == "none"){
             $('#correct_result').show();
@@ -74,5 +75,52 @@ $(document).ready(function () {
               $('#correct_result').hide();
          }
     });
+
+    //get data for chart
+    var getData = $.get('/data');
+    
+    getData.done(function(results_count) {
+        //bar chart
+        new Chart(document.getElementById("bar-chart"), {
+            type: 'bar',
+            data: {
+                labels: ["No.1", "No.2", "No.3", "No.4", "No.5", "None"],
+                datasets: [
+                {
+                    label: "Count",
+                    backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", "#3b1245"],
+                    data: results_count
+                }
+                ]
+            },
+            options: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'Correctly Predict In Result No.#'
+                }
+            }
+        });
+
+        //pie chart
+        new Chart(document.getElementById("pie-chart"), {
+            type: 'pie',
+            data: {
+            labels: ["No.1", "No.2", "No.3", "No.4", "No.5", "None"],
+            datasets: [{
+                label: "Count",
+                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", "#3b1245"],
+                data: results_count
+            }]
+            },
+            options: {
+            title: {
+                display: true,
+                text: 'Correctly Predict In Result No.#'
+            }
+            }
+        });
+    });
+    
 
 });

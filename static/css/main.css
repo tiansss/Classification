@@ -46,12 +46,16 @@ input[type="file"] {
 }
 
 
-/* Very simple grid for example */
+/* vertical grid */
 .container { position: relative; width: 1600px; padding: 0; max-width: 1600px;}
 
 .container .column, .container .columns { float: left; display: inline; margin-left: 10px; margin-right: 10px; }
 
 .container .one-third.column { width: 500px;}
+
+.container .one-twice.column { width: 750px;}
+
+
 
 
   
