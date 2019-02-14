@@ -1,5 +1,5 @@
 # image_classification_flask
-**An image classification web application built by Flask, Google Cloud, MongoDB and TensorFlow.**
+**An image classification web application built by Flask, Google Cloud Storage, MongoDB and TensorFlow.**
 ![screenshot1](/screenshot1.png)
 ![screenshot2](/screenshot2.png)
 
@@ -20,7 +20,7 @@
 
 
 ## How to run
-### Modify config.py with your own Google Cloud and MongoDB information.
+### Modify config.py with your own Google Cloud Storage and MongoDB information.
 ### Install requirements
 ```
 $ pip install -r requirements.txt
