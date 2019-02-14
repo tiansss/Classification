@@ -1,6 +1,7 @@
 # image_classification_flask
 **An image classification web application built by Flask, Google Cloud, MongoDB and TensorFlow.**
-![screenshot1]()
+![screenshot1](/screenshot1.png)
+![screenshot2](/screenshot2.png)
 
 ## Introduction
 * This is a Flask web application based on our project [https://github.com/tiansss/Image-Classification](https://github.com/tiansss/Image-Classification). 
